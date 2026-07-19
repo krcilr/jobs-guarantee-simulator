@@ -53,10 +53,11 @@
   },
 
   "labor_share_crosscheck": {
-    "construction": 0.35,
-    "care": 0.775,
-    "environmental": 0.55,
-    "citation": "PRELIMINARY midpoints of literature ranges (see data/processed/labor_share_coefficients.json). Used only for the ASCE-dollars-to-jobs cross-check, not the primary Levy-method engine. Replace with exact BEA GDP-by-Industry extraction before launch."
+    "construction": 0.318,
+    "care": 0.578,
+    "environmental": 0.522,
+    "citation": "Exact 2024 extraction from BEA published series: compensation of employees (NIPA 6.2D) / gross output (GDP-by-Industry), per industry. Construction (NAICS 23) = 0.318; conservative — excluding the labor portion of proprietors' income understates jobs per dollar (0.384 with the standard 2/3 proprietors' adjustment). Care = Social assistance (624); environmental = Forestry, fishing & related (113FF). Used only for the ASCE-dollars-to-jobs cross-check, not the primary Levy-method engine. Full series citations and caveats in data/processed/labor_share_coefficients.json.",
+    "citation_url": "https://www.bea.gov/data/gdp/gdp-industry"
   },
 
   "childcare_staffing_ratio": {

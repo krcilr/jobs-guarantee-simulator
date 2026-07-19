@@ -1,23 +1,106 @@
 {
   "meta": {
-    "dataset": "Labor share coefficients for dollars-to-jobs conversion (Step 1 of engine)",
-    "status": "PRELIMINARY — ranges documented, exact coefficients require BEA table extraction (see extraction_plan)",
-    "source": "U.S. Bureau of Economic Analysis, GDP-by-Industry accounts (compensation of employees, gross output, value added by industry)",
+    "dataset": "Labor share coefficients for dollars-to-jobs conversion (cross-check method)",
+    "status": "EXTRACTED — exact 2024 values computed from BEA published series (see series_citations). Supersedes the preliminary literature ranges.",
+    "source": "U.S. Bureau of Economic Analysis: NIPA Table 6.2D (compensation of employees by industry), NIPA Table 6.12D (nonfarm proprietors' income by industry), and GDP-by-Industry gross output tables",
     "source_url": "https://www.bea.gov/data/gdp/gdp-industry",
-    "retrieved": "2026-07-18",
-    "definition": "labor_share = compensation of employees / gross output, per industry. Applied to ASCE backlog dollars (project spend ≈ gross output) to derive the labor-dollar portion.",
-    "extraction_plan": [
-      "Download BEA interactive GDP-by-Industry tables: 'Components of Value Added by Industry Group' (for compensation) and 'Gross Output by Industry' (denominator), latest annual year.",
-      "Compute compensation/gross_output for: Construction (NAICS 23), Health care & social assistance (62, for care work proxy), Administrative & waste services (56, environmental services proxy).",
-      "Caveat to document: BEA compensation excludes the labor portion of proprietors' income (BEA itself notes it cannot split proprietors' income into labor vs capital). This understates true labor share, especially in construction with many sole proprietors. Common academic fix: attribute ~2/3 of proprietors' income to labor (NBER convention). Decide whether to apply."
+    "vintage": "2024 annual values (NIPA comp series last updated 2025-12-30; gross output release last updated 2026-06-25)",
+    "retrieved": "2026-07-19",
+    "retrieval_route": "BEA values read via two independent public mirrors of BEA data: FRED (fred.stlouisfed.org, BEA Data API) and DBnomics (db.nomics.world, BEA provider). Series codes below.",
+    "definition": "labor_share = compensation of employees / gross output, per industry, 2024 annual. Applied to ASCE backlog dollars (project spend ≈ gross output) to derive the labor-dollar portion.",
+    "series_citations": {
+      "construction_compensation": {
+        "value_musd": 799308,
+        "series": "NIPA 6.2D 'Compensation of employees: Domestic private industries: Construction', BEA account N4012C, annual 2024",
+        "url": "https://fred.stlouisfed.org/series/N4012C0A144NBEA"
+      },
+      "construction_gross_output": {
+        "value_busd": 2511.475,
+        "series": "BEA GDP-by-Industry 'Gross Output by Industry: Construction', 2024 annual average of quarterly SAAR values (2500.6, 2506.6, 2509.7, 2529.0)",
+        "url": "https://fred.stlouisfed.org/series/GOC"
+      },
+      "construction_proprietors_income": {
+        "value_musd": 246068,
+        "series": "NIPA 6.12D 'Nonfarm Proprietors' Income by Industry: Construction', annual 2024 (DBnomics BEA/NIPA-T61200D/N1803C-A)",
+        "url": "https://db.nomics.world/BEA/NIPA-T61200D"
+      },
+      "social_assistance_compensation": {
+        "value_musd": 204772,
+        "series": "NIPA 6.2D 'Social assistance' (line 78), annual 2024 (DBnomics BEA/NIPA-T60200D/N4080C-A)",
+        "url": "https://db.nomics.world/BEA/NIPA-T60200D"
+      },
+      "social_assistance_gross_output": {
+        "value_busd": 354.4,
+        "series": "BEA GDP-by-Industry 'Gross Output: Social assistance' (NAICS 624), annual 2024 (DBnomics BEA/GDPbyIndustry-15/624-A)",
+        "url": "https://db.nomics.world/BEA/GDPbyIndustry-15"
+      },
+      "health_social_compensation": {
+        "value_musd": 1771438,
+        "series": "NIPA 6.2D 'Health care and social assistance' (line 74), annual 2024 (DBnomics BEA/NIPA-T60200D/N4076C-A)",
+        "url": "https://db.nomics.world/BEA/NIPA-T60200D"
+      },
+      "health_social_gross_output": {
+        "value_busd": 3588.2,
+        "series": "BEA GDP-by-Industry 'Gross Output: Health care and social assistance' (NAICS 62), annual 2024 (DBnomics BEA/GDPbyIndustry-15/62-A)",
+        "url": "https://db.nomics.world/BEA/GDPbyIndustry-15"
+      },
+      "forestry_compensation": {
+        "value_musd": 35555,
+        "series": "NIPA 6.2D 'Forestry, fishing, and related activities' (line 6), annual 2024 (DBnomics BEA/NIPA-T60200D/N4006C-A)",
+        "url": "https://db.nomics.world/BEA/NIPA-T60200D"
+      },
+      "forestry_gross_output": {
+        "value_busd": 68.1,
+        "series": "BEA GDP-by-Industry 'Gross Output: Forestry, fishing, and related activities' (113FF), annual 2024 (DBnomics BEA/GDPbyIndustry-15/113FF-A)",
+        "url": "https://db.nomics.world/BEA/GDPbyIndustry-15"
+      },
+      "admin_waste_compensation": {
+        "value_musd": 637453,
+        "series": "NIPA 6.2D 'Administrative and waste management services' (line 70), annual 2024 (DBnomics BEA/NIPA-T60200D/N4072C-A)",
+        "url": "https://db.nomics.world/BEA/NIPA-T60200D"
+      },
+      "admin_waste_gross_output": {
+        "value_busd": 1515.1,
+        "series": "BEA GDP-by-Industry 'Gross Output: Administrative and waste management services' (NAICS 56), annual 2024 (DBnomics BEA/GDPbyIndustry-15/56-A)",
+        "url": "https://db.nomics.world/BEA/GDPbyIndustry-15"
+      },
+      "waste_remediation_compensation": {
+        "value_musd": 49486,
+        "series": "NIPA 6.2D 'Waste management and remediation services' (line 72), annual 2024 (DBnomics BEA/NIPA-T60200D/N4074C-A)",
+        "url": "https://db.nomics.world/BEA/NIPA-T60200D"
+      },
+      "waste_remediation_gross_output": {
+        "value_busd": 177.5,
+        "series": "BEA GDP-by-Industry 'Gross Output: Waste management and remediation services' (NAICS 562), annual 2024 (DBnomics BEA/GDPbyIndustry-15/562-A)",
+        "url": "https://db.nomics.world/BEA/GDPbyIndustry-15"
+      }
+    },
+    "caveats": [
+      "PROPRIETORS' INCOME: BEA compensation of employees excludes the labor portion of proprietors' income (BEA cannot split it into labor vs capital). This understates the true labor share, especially in construction where sole proprietors are common. Applying the standard academic convention (attribute 2/3 of proprietors' income to labor; construction 2024 proprietors' income = $246.1B) raises the construction share from 0.318 to 0.384. DECISION: the engine uses the UNADJUSTED 0.318 — the conservative choice (it understates, never overstates, jobs per backlog dollar). The adjusted value is documented here for sensitivity.",
+      "CARE: the extracted Social assistance (NAICS 624) share of 0.578 is well below the preliminary literature range (0.70-0.85). The preliminary range likely described direct-care labor content, not the sector ratio. The engine does NOT use this coefficient for care: childcare jobs are derived from slots via staffing ratios (see childcare_gap.json). Broad Health care & social assistance (62) = 0.494, dragged down by hospitals' drug/equipment intermediates.",
+      "ENVIRONMENTAL: candidate proxies span 0.279 (Waste management & remediation, 562 — equipment-heavy) to 0.522 (Forestry, fishing & related, 113FF — labor-heavy). The chosen headline value 0.522 (113FF) best matches the reforestation/conservation-skewed program mix, per the preliminary file's own reasoning. Unused by the v1 engine; documented for the future environmental work category."
     ],
-    "alternative_approach": "Levy Institute JG papers (e.g., WP 902) invert the logic: model workers and wages first, then add non-labor costs (materials, equipment, admin) as ~25% ON TOP of the wage bill. Simpler, directly citable to the canonical JG cost study, and may be the better v1 method for care/environmental categories where 'backlog dollars' don't exist. RECOMMENDATION: use Levy method (wages + 25% non-labor markup) as the v1 engine default; use BEA labor-share method as the cross-check and for infrastructure categories where ASCE dollars are the starting point. Showing both reconcile is a credibility win."
+    "alternative_approach": "Levy Institute JG papers (e.g., WP 902) invert the logic: model workers and wages first, then add non-labor costs as ~25% on top of the wage bill. This IS the v1 engine's primary method; the BEA labor-share method here is the cross-check for infrastructure categories where ASCE dollars are the starting point. Showing both reconcile is a credibility win."
   },
-  "preliminary_coefficients": {
-    "_warning": "Ranges from economic literature, NOT yet extracted from current BEA tables. Do not ship without replacing with exact cited values.",
-    "construction": { "labor_share_of_gross_output_range": [0.30, 0.40], "basis": "heavy construction; materials/equipment-intensive" },
-    "care_work": { "labor_share_range": [0.70, 0.85], "basis": "health care & social assistance; labor-dominant. Note: for care, prefer direct slots→workers conversion via staffing ratios (see childcare_gap.json)" },
-    "environmental": { "labor_share_range": [0.45, 0.65], "basis": "between construction and services; varies widely by activity (reforestation is labor-heavy, remediation is equipment-heavy)" }
+  "coefficients_2024": {
+    "construction": {
+      "labor_share_of_gross_output": 0.318,
+      "computation": "799308 / 2511475 = 0.3183 (compensation $M / gross output $M, 2024)",
+      "with_proprietors_adjustment": 0.384,
+      "adjustment_computation": "(799308 + 2/3 * 246068) / 2511475 = 0.3836"
+    },
+    "care_work": {
+      "labor_share_of_gross_output": 0.578,
+      "computation": "204772 / 354400 = 0.5778 (Social assistance, NAICS 624, 2024)",
+      "broad_sector_62_share": 0.494,
+      "note": "Engine converts care slots to workers via staffing ratios, not this coefficient."
+    },
+    "environmental": {
+      "labor_share_of_gross_output": 0.522,
+      "computation": "35555 / 68100 = 0.5221 (Forestry, fishing & related activities, 113FF, 2024)",
+      "proxy_spread": { "waste_remediation_562": 0.279, "admin_and_waste_56": 0.421, "forestry_113FF": 0.522 },
+      "note": "Unused by v1 engine; for the future environmental work category."
+    }
   },
   "levy_method_params": {
     "non_labor_cost_markup_on_wages": 0.25,

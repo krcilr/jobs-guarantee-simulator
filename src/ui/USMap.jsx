@@ -3,14 +3,13 @@ import { geoAlbersUsa, geoPath } from "d3-geo";
 import { feature } from "topojson-client";
 import statesTopo from "us-atlas/states-10m.json";
 import { FIPS_TO_POSTAL } from "./fips.js";
-import { fmtCount, fmtRate } from "./format.js";
 
 const WIDTH = 975;
 const HEIGHT = 610;
 
-/* Sequential blue ramp (dark-surface steps from the validated reference palette).
-   Low impact recedes toward the surface; high impact is brightest. */
-const RAMP = ["#104281", "#184f95", "#256abf", "#3987e5", "#6da7ec", "#b7d3f6"];
+/* 6-step single-hue ramp from the design tokens, resolved via CSS custom
+   properties so light mode can invert lightness without touching JS. */
+const RAMP = [1, 2, 3, 4, 5, 6].map((n) => `var(--ramp-${n})`);
 
 const geoFeatures = feature(statesTopo, statesTopo.objects.states).features.filter(
   (f) => FIPS_TO_POSTAL[f.id]
@@ -18,8 +17,8 @@ const geoFeatures = feature(statesTopo, statesTopo.objects.states).features.filt
 const path = geoPath(geoAlbersUsa().scale(1300).translate([WIDTH / 2, HEIGHT / 2]));
 
 /**
- * Choropleth of program impact per state, measured as the percentage-point
- * drop in unemployment rate (old rate from BLS data, new rate from the sim).
+ * "Where the jobs land" — choropleth of the percentage-point drop in
+ * unemployment rate per state (old rate from BLS data, new rate from the sim).
  */
 export default function USMap({ sim, blsData, selected, onSelect }) {
   const [hover, setHover] = useState(null); // { code, x, y }
@@ -48,53 +47,60 @@ export default function USMap({ sim, blsData, selected, onSelect }) {
   const hoverState = hover ? sim.states[hover.code] : null;
 
   return (
-    <div className="map-wrap">
-      <svg
-        viewBox={`0 0 ${WIDTH} ${HEIGHT}`}
-        role="img"
-        aria-label="US map of program impact by state"
-      >
-        {geoFeatures.map((f) => {
-          const code = FIPS_TO_POSTAL[f.id];
-          return (
-            <path
-              key={code}
-              d={path(f)}
-              fill={colorFor(code)}
-              stroke="#0d0d0d"
-              strokeWidth={selected === code ? 2.5 : 0.75}
-              className={`state${selected === code ? " state-selected" : ""}`}
-              onMouseMove={(e) => {
-                const rect = e.currentTarget.ownerSVGElement.parentNode.getBoundingClientRect();
-                setHover({ code, x: e.clientX - rect.left, y: e.clientY - rect.top });
-              }}
-              onMouseLeave={() => setHover(null)}
-              onClick={() => onSelect(selected === code ? null : code)}
-            />
-          );
-        })}
-      </svg>
-
-      {hoverState && (
-        <div
-          className="map-tooltip"
-          style={{ left: Math.min(hover.x + 14, 760), top: hover.y + 14 }}
-        >
-          <strong>{hoverState.name}</strong>
-          <div>{fmtCount(hoverState.programWorkers)} program workers</div>
-          <div>
-            {fmtRate(impacts[hover.code].oldRate)} &rarr; {fmtRate(hoverState.newUnemploymentRate)} unemployment
-          </div>
+    <>
+      <div className="map-head">
+        <div className="map-title">
+          Where the jobs land <span>&mdash; drop in unemployment rate by state</span>
         </div>
-      )}
-
-      <div className="map-legend" aria-hidden="true">
-        <span className="legend-label">Smaller drop</span>
-        {RAMP.map((c) => (
-          <span key={c} className="legend-swatch" style={{ background: c }} />
-        ))}
-        <span className="legend-label">Larger drop in unemployment</span>
+        <div className="map-legend micro" aria-hidden="true">
+          <span>&minus;{lo.toFixed(1)} pp</span>
+          {RAMP.map((c) => (
+            <span key={c} className="legend-swatch" style={{ background: c }} />
+          ))}
+          <span>&minus;{hi.toFixed(1)}</span>
+        </div>
       </div>
-    </div>
+
+      <div className="map-wrap">
+        <svg
+          viewBox={`0 0 ${WIDTH} ${HEIGHT}`}
+          role="img"
+          aria-label="US map of drop in unemployment rate by state"
+        >
+          {geoFeatures.map((f) => {
+            const code = FIPS_TO_POSTAL[f.id];
+            return (
+              <path
+                key={code}
+                d={path(f)}
+                fill={colorFor(code)}
+                stroke="var(--bg)"
+                strokeWidth={0.75}
+                className={`state${selected === code ? " state-selected" : ""}`}
+                onMouseMove={(e) => {
+                  const rect = e.currentTarget.ownerSVGElement.parentNode.getBoundingClientRect();
+                  setHover({ code, x: e.clientX - rect.left, y: e.clientY - rect.top });
+                }}
+                onMouseLeave={() => setHover(null)}
+                onClick={() => onSelect(selected === code ? null : code)}
+              />
+            );
+          })}
+        </svg>
+
+        {hoverState && (
+          <div
+            className="map-tooltip"
+            style={{ left: Math.min(hover.x + 14, 700), top: hover.y + 14 }}
+          >
+            <strong>{hoverState.name}</strong>
+            <span className="tip-data">
+              &minus;{impacts[hover.code].drop.toFixed(1)} pp &middot;{" "}
+              {hoverState.programWorkers.toLocaleString("en-US")} jobs
+            </span>
+          </div>
+        )}
+      </div>
+    </>
   );
 }

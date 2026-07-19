@@ -1,30 +1,35 @@
 import { fmtBillions, fmtCount, fmtRate } from "./format.js";
 
-/** Detail panel for the clicked state. */
-export default function StatePanel({ state, blsState, onClose }) {
+/** Horizontal detail strip under the map for the clicked state (Esc closes). */
+export default function StatePanel({ state, blsState }) {
   const oldRate = (100 * state.unemployed) / blsState.labor_force;
   return (
-    <div className="state-panel">
-      <div className="state-panel-head">
+    <div className="state-strip">
+      <div className="state-strip-id">
         <h3>{state.name}</h3>
-        <button className="close-btn" onClick={onClose} aria-label="Close state detail">
-          &times;
-        </button>
+        <span className="micro">Clicked state &middot; esc to close</span>
       </div>
-      <dl>
-        <dt>Unemployed (Apr 2026)</dt>
-        <dd>{fmtCount(state.unemployed)}</dd>
-        <dt>Program workers</dt>
-        <dd>{fmtCount(state.programWorkers)}</dd>
-        <dt>Unemployment rate</dt>
-        <dd>
-          {fmtRate(oldRate)} &rarr; <strong>{fmtRate(state.newUnemploymentRate)}</strong>
-        </dd>
-        <dt>Gross cost</dt>
-        <dd>{fmtBillions(state.gross)}</dd>
-        <dt>Net cost</dt>
-        <dd>{fmtBillions(state.net)}</dd>
-      </dl>
+      <div className="state-stat">
+        <span className="micro">Unemployed</span>
+        <span className="state-stat-value">{fmtCount(state.unemployed)}</span>
+      </div>
+      <div className="state-stat">
+        <span className="micro">Program workers</span>
+        <span className="state-stat-value">{fmtCount(state.programWorkers)}</span>
+      </div>
+      <div className="state-stat">
+        <span className="micro">Rate</span>
+        <span className="state-stat-value">
+          <span className="rate-old">{fmtRate(oldRate)}</span>{" "}
+          <span className="rate-new">{fmtRate(state.newUnemploymentRate)}</span>
+        </span>
+      </div>
+      <div className="state-stat">
+        <span className="micro">Gross / net cost</span>
+        <span className="state-stat-value">
+          {fmtBillions(state.gross)} <span className="net">/ {fmtBillions(state.net)}</span>
+        </span>
+      </div>
     </div>
   );
 }

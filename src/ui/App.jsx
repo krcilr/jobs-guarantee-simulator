@@ -10,7 +10,7 @@ import assumptions from "../../config/assumptions.json";
 import blsData from "../../data/processed/bls_state_unemployment.json";
 import asceData from "../../data/processed/asce_infrastructure_gaps.json";
 import childcareData from "../../data/processed/childcare_gap.json";
-import { sliderDefs, valuesFromUrl, urlFromValues } from "./sliders.js";
+import { sliderDefs, valuesFromUrl, urlFromValues, isHostile, trackFraction } from "./sliders.js";
 import Headline from "./Headline.jsx";
 import USMap from "./USMap.jsx";
 import StatePanel from "./StatePanel.jsx";
@@ -30,8 +30,13 @@ export default function App() {
 
   useEffect(() => {
     const onHash = () => setRoute(window.location.hash);
+    const onKey = (e) => e.key === "Escape" && setSelected(null);
     window.addEventListener("hashchange", onHash);
-    return () => window.removeEventListener("hashchange", onHash);
+    window.addEventListener("keydown", onKey);
+    return () => {
+      window.removeEventListener("hashchange", onHash);
+      window.removeEventListener("keydown", onKey);
+    };
   }, []);
 
   // Every slider state serializes into the URL: sharing a link shares the scenario.
@@ -47,6 +52,8 @@ export default function App() {
     return { nation, recon: reconcile(nation, infraWY, childcareWorkers) };
   }, [values]);
 
+  // Skeptic mode: any slider pushed to the cost-raising side of its cited default.
+  const skeptic = DEFS.some((d) => isHostile(d, values[d.key]));
   const gdpShare = `${((100 * sim.nation.totals.net) / US_GDP).toFixed(2)}%`;
 
   const copyLink = async () => {
@@ -60,12 +67,15 @@ export default function App() {
   return (
     <div className="app">
       <header className="app-header">
-        <h1>Jobs Guarantee Simulator</h1>
+        <div className="brand">
+          <h1>Jobs Guarantee Simulator</h1>
+          <span className="micro">Every number cited</span>
+        </div>
         <nav>
           <a href="#/" className={!isMethodology ? "active" : ""}>Simulator</a>
           <a href="#/methodology" className={isMethodology ? "active" : ""}>Methodology</a>
           <a href="https://github.com/krcilr/jobs-guarantee-simulator" target="_blank" rel="noreferrer">
-            GitHub
+            GitHub &#8599;
           </a>
         </nav>
       </header>
@@ -74,49 +84,85 @@ export default function App() {
         <Methodology />
       ) : (
         <>
-          <Headline sim={sim.nation} gdpShare={gdpShare} />
+          <div className="kicker micro">
+            If the US guaranteed a job to anyone who wants one &mdash; at these assumptions &mdash;
+          </div>
+          <Headline sim={sim.nation} gdpShare={gdpShare} skeptic={skeptic} />
 
           <div className="main-grid">
-            <section className="controls">
+            <section className="controls card">
               <div className="controls-head">
-                <h3>Set the assumptions</h3>
-                <button className="share-btn" onClick={copyLink}>
+                <h3>Assumptions</h3>
+                {skeptic ? (
+                  <span className="skeptic-badge">Skeptic settings active</span>
+                ) : (
+                  <span className="micro">{DEFS.length} parameters</span>
+                )}
+              </div>
+              <p className="provocation">
+                Think we're cooking the books? Drag{" "}
+                <button
+                  onClick={() => setValues((v) => ({ ...v, efficiencyMultiplier: 1.3 }))}
+                >
+                  government efficiency to 130%
+                </button>{" "}
+                of private cost and watch the bottom line.
+              </p>
+              {DEFS.map((d) => {
+                const hostile = isHostile(d, values[d.key]);
+                return (
+                  <label
+                    key={d.key}
+                    className={`slider-row${hostile ? " hostile" : ""}`}
+                    title={d.citation}
+                  >
+                    <span className="slider-head">
+                      <span className="slider-name">
+                        {d.label}
+                        <span className="cite">[{d.tag}]</span>
+                      </span>
+                      <span className="value-chip">{d.fmt(values[d.key])}</span>
+                    </span>
+                    <span className="track-wrap">
+                      <input
+                        type="range"
+                        min={d.range[0]}
+                        max={d.range[1]}
+                        step={d.step}
+                        value={values[d.key]}
+                        onChange={(e) =>
+                          setValues((v) => ({ ...v, [d.key]: parseFloat(e.target.value) }))
+                        }
+                      />
+                      <span
+                        className="default-tick"
+                        style={{ left: `${100 * trackFraction(d, d.defaultValue)}%` }}
+                      />
+                    </span>
+                    <span className="slider-scale">
+                      <span>{d.fmt(d.range[0])}</span>
+                      <span>cited default</span>
+                      <span>{d.fmt(d.range[1])}</span>
+                    </span>
+                  </label>
+                );
+              })}
+              <div className="btn-row">
+                <button className="btn-primary" onClick={copyLink}>
                   {copied ? "Copied!" : "Copy share link"}
                 </button>
+                <button
+                  className="btn-secondary"
+                  onClick={() =>
+                    setValues(Object.fromEntries(DEFS.map((d) => [d.key, d.defaultValue])))
+                  }
+                >
+                  Reset to cited defaults
+                </button>
               </div>
-              {DEFS.map((d) => (
-                <label key={d.key} className="slider-row" title={d.citation}>
-                  <span className="slider-label">
-                    {d.label}
-                    <strong>{d.fmt(values[d.key])}</strong>
-                  </span>
-                  <input
-                    type="range"
-                    min={d.range[0]}
-                    max={d.range[1]}
-                    step={d.step}
-                    value={values[d.key]}
-                    onChange={(e) =>
-                      setValues((v) => ({ ...v, [d.key]: parseFloat(e.target.value) }))
-                    }
-                  />
-                </label>
-              ))}
-              <button
-                className="reset-btn"
-                onClick={() =>
-                  setValues(Object.fromEntries(DEFS.map((d) => [d.key, d.defaultValue])))
-                }
-              >
-                Reset to cited defaults
-              </button>
-              <p className="controls-note">
-                Think the government is inefficient? Drag efficiency to 130% of private cost
-                and see what happens. Every default is cited — see the methodology page.
-              </p>
             </section>
 
-            <section className="map-col">
+            <section className="map-card card">
               <USMap
                 sim={sim.nation}
                 blsData={blsData}
@@ -127,7 +173,6 @@ export default function App() {
                 <StatePanel
                   state={sim.nation.states[selected]}
                   blsState={blsData.states[selected]}
-                  onClose={() => setSelected(null)}
                 />
               )}
             </section>
@@ -137,8 +182,14 @@ export default function App() {
         </>
       )}
 
-      <footer className="app-footer">
-        Open source under MIT &middot; every number cited &middot; BLS data: April 2026
+      <footer className="app-footer micro">
+        <span>
+          MIT license &middot; every number cited &middot;{" "}
+          <a href="https://github.com/krcilr/jobs-guarantee-simulator" target="_blank" rel="noreferrer">
+            source on GitHub
+          </a>
+        </span>
+        <span>Data vintage &mdash; BLS: Apr 2026 &middot; ASCE: 2025 &middot; Levy: 2018</span>
       </footer>
     </div>
   );

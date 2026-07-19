@@ -102,9 +102,11 @@ a { color: var(--accent); }
 .stat-tile:first-child { border-left: none; padding-left: 0; }
 .stat-label { margin-bottom: 0.4rem; }
 .stat-value {
-  font-size: 62px; line-height: 1; font-weight: 750; letter-spacing: -0.025em;
-  font-variant-numeric: tabular-nums; margin-bottom: 0.5rem; white-space: nowrap;
+  font-size: clamp(36px, 4.4vw, 62px); line-height: 1.05; font-weight: 750;
+  letter-spacing: -0.025em; font-variant-numeric: tabular-nums;
+  margin-bottom: 0.5rem; white-space: nowrap;
 }
+.stat-value.rate { font-size: clamp(28px, 3.2vw, 44px); }
 .stat-value .unit { font-size: 0.55em; font-weight: 700; }
 .stat-value .rate-old { color: var(--text-3); text-decoration: line-through; text-decoration-thickness: 3px; }
 .stat-value .rate-arrow { color: var(--text-3); font-size: 0.5em; vertical-align: 0.4em; padding: 0 0.1em; }

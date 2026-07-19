@@ -26,7 +26,7 @@ export default function Headline({ sim, gdpShare, skeptic }) {
       </div>
       <div className="stat-tile">
         <div className="stat-label micro">Unemployment rate</div>
-        <div className="stat-value">
+        <div className="stat-value rate">
           <span className="rate-old">{fmtRate(oldRate)}</span>
           <span className="rate-arrow">&#10142;</span>
           <span className="rate-new">{fmtRate(t.newNationalUnemploymentRate)}</span>

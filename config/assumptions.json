@@ -1,0 +1,72 @@
+{
+  "_readme": "Central assumptions config. Every model parameter lives here with its citation. The methodology page is generated from this file. Slider defaults and ranges defined here; changing a default never requires touching engine code.",
+
+  "wage": {
+    "default_hourly": 17.00,
+    "slider_range": [12.00, 25.00],
+    "citation": "Placeholder anchor between the Levy Institute's $15 (2018 dollars, WP 902) and current living-wage estimates (~$19-21 single adult in median states). PENDING: replace with per-state living wage anchor upon Living Wage Institute license, or BEA Regional Price Parity scaling.",
+    "citation_url": "https://www.levyinstitute.org/pubs/wp_902.pdf",
+    "annual_hours": 2080,
+    "annual_hours_citation": "Full-time convention: 40 hrs/wk x 52 wks, matching MIT Living Wage Calculator and Levy methodology."
+  },
+
+  "benefits_load": {
+    "default": 0.20,
+    "slider_range": [0.10, 0.35],
+    "citation": "Levy WP 902 assumes ~20% of wages for benefits incl. health insurance. BLS ECEC benchmarks private-sector benefits at 29-32% of total compensation (higher because it includes legally required payroll taxes; our admin category partially overlaps).",
+    "citation_url": "https://www.levyinstitute.org/pubs/wp_902.pdf"
+  },
+
+  "participation_rate": {
+    "default": 0.60,
+    "slider_range": [0.20, 1.00],
+    "citation": "Share of officially unemployed who take a program job. No historical precedent for exact uptake; Brookings/Hamilton Project 2018 analysis models participation varying with wage level and geography. 60% default is a conservative midpoint; slider exists precisely because this is uncertain.",
+    "citation_url": "https://www.thefiscaltimes.com/2018/12/06/How-Much-Would-Federal-Jobs-Guarantee-Cost"
+  },
+
+  "non_labor_cost_markup": {
+    "default": 0.25,
+    "slider_range": [0.15, 0.50],
+    "citation": "Levy WP 902: materials, equipment, and other non-labor program costs modeled at 25% of the wage bill.",
+    "citation_url": "https://www.levyinstitute.org/pubs/wp_902.pdf"
+  },
+
+  "efficiency_multiplier": {
+    "default": 1.00,
+    "slider_range": [0.80, 1.30],
+    "citation": "Public-vs-private delivery cost adjustment applied to non-labor costs. 1.0 = private benchmarks. Range reflects contractor margins of only 3-7% on the low end and documented US public-sector cost premiums (transit-costs literature) on the high end. Deliberately a slider, not an assumption: the tool's answer to 'government is inefficient' is to let skeptics set it to 130% and see the program still function.",
+    "citation_url": null
+  },
+
+  "admin_overhead": {
+    "default": 0.03,
+    "slider_range": [0.02, 0.05],
+    "citation": "Program administration at 2-5% of program cost, consistent with existing large federal programs (e.g., Social Security admin <1%, Medicaid ~5%, UI ~3%).",
+    "citation_url": null
+  },
+
+  "fiscal_offset_rate": {
+    "default": 0.22,
+    "slider_range": [0.10, 0.30],
+    "citation": "Levy Institute estimates net program cost 20-25% below gross via reduced UI/Medicaid/EITC spending and increased tax revenue; Levy authors note these are conservative (exclude incarceration, other savings). Default 22% = midpoint.",
+    "citation_url": "https://www.levyinstitute.org/pubs/wp_902.pdf"
+  },
+
+  "labor_share_crosscheck": {
+    "construction": 0.35,
+    "care": 0.775,
+    "environmental": 0.55,
+    "citation": "PRELIMINARY midpoints of literature ranges (see data/processed/labor_share_coefficients.json). Used only for the ASCE-dollars-to-jobs cross-check, not the primary Levy-method engine. Replace with exact BEA GDP-by-Industry extraction before launch."
+  },
+
+  "childcare_staffing_ratio": {
+    "children_per_worker": 7,
+    "citation": "PRELIMINARY blended ratio across age groups (licensing ratios run ~4:1 infants to ~10:1 preschool). Converts the 4.2M-child care gap into required workers. Replace with per-state licensing-ratio-weighted figure.",
+    "citation_url": "https://childcaregap.org"
+  },
+
+  "state_allocation_proxy": {
+    "method": "labor_force_share",
+    "citation": "v1 proxy: national ASCE category gaps allocated to states by share of national labor force. Documented limitation; v2 upgrades to per-category proxies (FHWA lane-miles for roads, NBI bridge counts for bridges, etc.)."
+  }
+}

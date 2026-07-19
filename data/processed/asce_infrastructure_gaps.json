@@ -1,0 +1,46 @@
+{
+  "meta": {
+    "dataset": "US infrastructure cumulative investment needs, funded amounts, and gaps, 2024-2033",
+    "source": "ASCE 2025 Report Card for America's Infrastructure / Bridging the Gap 2024 study",
+    "source_url": "https://infrastructurereportcard.org/economics/",
+    "vintage": "2025 Report Card (released March 2025), covering 2024-2033",
+    "retrieved": "2026-07-18",
+    "units": "billions of USD, not adjusted for inflation",
+    "notes": [
+      "Needs = deferred maintenance to reach system-wide state of good repair (equivalent to a 'B' grade).",
+      "Funded assumes recent appropriation levels continue (IIJA, IRA, etc.) and state/local investment at FY2024 levels.",
+      "GEOGRAPHY LIMITATION: ASCE publishes these gaps NATIONALLY only. State report cards provide letter grades, not dollar backlogs. v1 must allocate national gaps to states via proxies (e.g., FHWA lane-miles for roads, NBI structurally deficient bridge counts for bridges, population as fallback). This allocation method is a modeling assumption that must be documented on the methodology page.",
+      "Snapback scenario (pre-2021 federal investment levels): gap grows to ~$4.4T including non-BTG categories.",
+      "ROUNDING: category columns sum to $5,451B funded / $3,690B gap vs ASCE's stated totals of $5,450B / $3,689B — a $1B rounding artifact in ASCE's own published table. Needs column matches exactly ($9,139B)."
+    ],
+    "category_source_footnotes": {
+      "btg2024": ["aviation", "bridges", "drinking_water", "energy", "inland_waterways_ports", "rail", "roads", "transit", "wastewater_stormwater"],
+      "other": {
+        "broadband": "Cartesian and Fiber Broadband Association",
+        "dams": "ASDSO, CRS, USDA, FEMA, CBO, AP",
+        "hazardous_solid_waste": "EPA, DoD, DoE, ASTSWMO",
+        "levees": "ASCE 2021 Report Card, CBO",
+        "public_parks": "NPS, NASPD, Trust for Public Land, PERC, CRS",
+        "schools": "21st Century Schools Fund"
+      }
+    }
+  },
+  "national_totals": { "needs": 9139, "funded": 5450, "gap": 3689 },
+  "categories": {
+    "aviation": { "label": "Aviation", "needs": 310, "funded": 197, "gap": 113 },
+    "bridges": { "label": "Bridges", "needs": 538, "funded": 165, "gap": 373 },
+    "broadband": { "label": "Broadband", "needs": 61, "funded": 61, "gap": 0 },
+    "dams": { "label": "Dams", "needs": 185, "funded": 20, "gap": 166 },
+    "drinking_water": { "label": "Drinking Water", "needs": 670, "funded": 361, "gap": 309 },
+    "energy": { "label": "Energy", "needs": 1886, "funded": 1308, "gap": 578 },
+    "hazardous_solid_waste": { "label": "Hazardous & Solid Waste", "needs": 162, "funded": 146, "gap": 16 },
+    "inland_waterways_ports": { "label": "Inland Waterways & Ports", "needs": 45, "funded": 32, "gap": 13 },
+    "levees": { "label": "Levees", "needs": 97, "funded": 7, "gap": 91 },
+    "public_parks": { "label": "Public Parks", "needs": 106, "funded": 62, "gap": 44 },
+    "rail": { "label": "Rail", "needs": 145, "funded": 113, "gap": 32 },
+    "roads": { "label": "Roads", "needs": 2233, "funded": 1549, "gap": 684 },
+    "schools": { "label": "Schools", "needs": 1100, "funded": 671, "gap": 429 },
+    "transit": { "label": "Transit", "needs": 618, "funded": 466, "gap": 152 },
+    "wastewater_stormwater": { "label": "Wastewater + Stormwater", "needs": 983, "funded": 293, "gap": 690 }
+  }
+}

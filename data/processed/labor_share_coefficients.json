@@ -1,0 +1,28 @@
+{
+  "meta": {
+    "dataset": "Labor share coefficients for dollars-to-jobs conversion (Step 1 of engine)",
+    "status": "PRELIMINARY — ranges documented, exact coefficients require BEA table extraction (see extraction_plan)",
+    "source": "U.S. Bureau of Economic Analysis, GDP-by-Industry accounts (compensation of employees, gross output, value added by industry)",
+    "source_url": "https://www.bea.gov/data/gdp/gdp-industry",
+    "retrieved": "2026-07-18",
+    "definition": "labor_share = compensation of employees / gross output, per industry. Applied to ASCE backlog dollars (project spend ≈ gross output) to derive the labor-dollar portion.",
+    "extraction_plan": [
+      "Download BEA interactive GDP-by-Industry tables: 'Components of Value Added by Industry Group' (for compensation) and 'Gross Output by Industry' (denominator), latest annual year.",
+      "Compute compensation/gross_output for: Construction (NAICS 23), Health care & social assistance (62, for care work proxy), Administrative & waste services (56, environmental services proxy).",
+      "Caveat to document: BEA compensation excludes the labor portion of proprietors' income (BEA itself notes it cannot split proprietors' income into labor vs capital). This understates true labor share, especially in construction with many sole proprietors. Common academic fix: attribute ~2/3 of proprietors' income to labor (NBER convention). Decide whether to apply."
+    ],
+    "alternative_approach": "Levy Institute JG papers (e.g., WP 902) invert the logic: model workers and wages first, then add non-labor costs (materials, equipment, admin) as ~25% ON TOP of the wage bill. Simpler, directly citable to the canonical JG cost study, and may be the better v1 method for care/environmental categories where 'backlog dollars' don't exist. RECOMMENDATION: use Levy method (wages + 25% non-labor markup) as the v1 engine default; use BEA labor-share method as the cross-check and for infrastructure categories where ASCE dollars are the starting point. Showing both reconcile is a credibility win."
+  },
+  "preliminary_coefficients": {
+    "_warning": "Ranges from economic literature, NOT yet extracted from current BEA tables. Do not ship without replacing with exact cited values.",
+    "construction": { "labor_share_of_gross_output_range": [0.30, 0.40], "basis": "heavy construction; materials/equipment-intensive" },
+    "care_work": { "labor_share_range": [0.70, 0.85], "basis": "health care & social assistance; labor-dominant. Note: for care, prefer direct slots→workers conversion via staffing ratios (see childcare_gap.json)" },
+    "environmental": { "labor_share_range": [0.45, 0.65], "basis": "between construction and services; varies widely by activity (reforestation is labor-heavy, remediation is equipment-heavy)" }
+  },
+  "levy_method_params": {
+    "non_labor_cost_markup_on_wages": 0.25,
+    "source": "Levy Economics Institute Working Paper No. 902 (Wray et al.), 'The Job Guarantee: Design, Jobs, and Implementation'",
+    "source_url": "https://www.levyinstitute.org/pubs/wp_902.pdf",
+    "program_admin_overhead_range": [0.02, 0.05]
+  }
+}

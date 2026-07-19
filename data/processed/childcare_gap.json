@@ -1,0 +1,34 @@
+{
+  "meta": {
+    "dataset": "Child care gap: children potentially needing care vs. formal slots available",
+    "source": "Child Care Gaps Assessment — Bipartisan Policy Center, Buffett Early Childhood Institute (Univ. of Nebraska), Child Care Aware of America",
+    "source_url": "https://childcaregap.org",
+    "secondary_urls": [
+      "https://bipartisanpolicy.org/press-release/new-interactive-map-reveals-an-estimated-4-2-million-children-nationwide-lack-access-to-child-care-costing-u-s-economy-up-to-329-billion/",
+      "https://bipartisanpolicy.org/article/state-child-care-data-2025-update/"
+    ],
+    "vintage": "September 2025 release (childcaregap.org update)",
+    "retrieved": "2026-07-18",
+    "notes": [
+      "Covers children under age 5. 'Potential need' = children whose family/work circumstances suggest need for care; 'supply' = slots at legally operating providers (center- and home-based, incl. Head Start, Tribal, DoD). Distance-based methodology: a slot counts only if within reasonable driving distance of the child's home.",
+      "State, county, and congressional-district level data available in the interactive tool at childcaregap.org.",
+      "TODO: extract per-state need/supply/gap figures from childcaregap.org (interactive JS tool — check for a downloadable dataset or data-request option; BPC also publishes state fact pages). Verify terms of use for embedding state figures with attribution; as an advocacy-oriented public resource this is likely permitted, but confirm before launch.",
+      "CONVERSION TO JOBS: gap in slots → workers needed via state staffing ratios. National average ~36 children under five per childcare industry employee (Playground 2026 analysis), but regulatory child:staff ratios for care settings are much lower (e.g., ~4:1 infants, ~10:1 preschool). Use licensing-ratio-based conversion, cited per state or via a national blended ratio as v1 simplification."
+    ]
+  },
+  "national": {
+    "children_potentially_needing_care": 14800000,
+    "formal_slots_supply": 10800000,
+    "gap_children_without_access": 4200000,
+    "gap_percent": 28.2,
+    "economic_cost_10yr_usd_billions_range": [216, 329],
+    "avg_annual_cost_per_child_usd": 13128
+  },
+  "states": {
+    "_status": "TO BE FILLED from childcaregap.org state pages",
+    "_examples_from_secondary_reporting": {
+      "MN": { "note": "deficit of 80,000+ licensed slots (CCAoA Mapping the Gap)" },
+      "IN": { "note": "~327,173 children under 6 with all parents in labor force; licensed capacity 190,871 (CCAoA)" }
+    }
+  }
+}

@@ -1,0 +1,23 @@
+{
+  "meta": {
+    "dataset": "Living wage by state — STATUS: BLOCKED ON DATA RIGHTS DECISION",
+    "retrieved": "2026-07-18",
+    "issue": "MIT Living Wage Calculator (livingwage.mit.edu) is the ideal, most-citable source and was updated Feb 15, 2026. HOWEVER, the site explicitly states 'Please do not scrape the data' and directs licensing inquiries to the Living Wage Institute via their contact form. Copyright: Dr. Amy K. Glasmeier and MIT. Using their full 50-state dataset in a public tool without a license is not okay — legally risky and bad optics for a credibility-first advocacy project.",
+    "options": {
+      "A_license": "Contact the Living Wage Institute for licensing. May be free/cheap for a non-commercial advocacy tool; MIT's brand is the strongest citation available. Founder action item.",
+      "B_bea_rpp": "Build our own state adjustment from fully public data: take a national base living wage anchor and scale it by BEA Regional Price Parities (public domain, state-level, published annually). Defensible, free, and the slider architecture means we can swap in licensed MIT data later without code changes.",
+      "C_epi": "Economic Policy Institute Family Budget Calculator — similar concept, but also has its own terms of use to check.",
+      "D_build_own": "Replicate the methodology from underlying public sources (HUD Fair Market Rents, USDA food plans, etc.). Most work; most defensible long-term."
+    },
+    "recommendation": "Option B for v1 (public data, ship now), pursue Option A in parallel (founder emails the Living Wage Institute). Config-file architecture makes the later swap trivial.",
+    "reference_points_from_secondary_sources": {
+      "note": "Small number of individual figures for sanity-checking only, from public reporting on the MIT calculator — NOT a dataset.",
+      "examples": {
+        "DC_single_adult_hourly": 20.80,
+        "NY_single_adult_hourly": 20.05,
+        "MO_single_adult_hourly": 21.27
+      },
+      "source": "worldpopulationreview.com/state-rankings/livable-wage-by-state and Nexstar reporting, 2026"
+    }
+  }
+}

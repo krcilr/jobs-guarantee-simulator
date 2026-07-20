@@ -1,0 +1,79 @@
+<!doctype html>
+<!-- Source for public/og-card.png (1200x630). Regenerate with scripts/make-og-card.ps1
+     after headline numbers change. Uses the app's design tokens. -->
+<html>
+<head>
+<meta charset="utf-8">
+<style>
+  @font-face {
+    font-family: "Public Sans";
+    src: url("../public/fonts/PublicSans-Variable.ttf") format("truetype-variations");
+    font-weight: 100 900;
+  }
+  * { margin: 0; box-sizing: border-box; }
+  body {
+    width: 1200px; height: 630px; overflow: hidden;
+    background: #0b0e13; color: #e9eef5;
+    font-family: "Public Sans", system-ui, sans-serif;
+    display: flex; flex-direction: column; justify-content: space-between;
+    padding: 56px 64px 0;
+  }
+  .micro {
+    font-family: ui-monospace, Consolas, monospace;
+    font-size: 17px; letter-spacing: 0.08em; text-transform: uppercase; color: #67758a;
+  }
+  .brand { display: flex; align-items: baseline; gap: 18px; margin-bottom: 40px; }
+  .brand h1 { font-size: 30px; font-weight: 700; letter-spacing: -0.01em; }
+  .kicker { margin-bottom: 44px; }
+  .stats { display: flex; gap: 44px; }
+  .stat .label { margin-bottom: 10px; }
+  .stat .value {
+    font-size: 72px; font-weight: 750; letter-spacing: -0.025em; line-height: 1;
+    font-variant-numeric: tabular-nums; white-space: nowrap;
+  }
+  .stat .value .unit { font-size: 0.55em; }
+  .rate-old { color: #67758a; text-decoration: line-through; text-decoration-thickness: 5px; }
+  .rate-arrow { color: #67758a; font-size: 0.5em; vertical-align: 0.45em; padding: 0 4px; }
+  .rate-new { color: #8bb9e3; }
+  .stat .sub { color: #96a3b4; font-size: 19px; margin-top: 14px; }
+  .footer {
+    display: flex; justify-content: space-between; align-items: center;
+    border-top: 1px solid #232c38; padding: 26px 0 30px;
+  }
+  .ramp { display: flex; }
+  .ramp span { width: 34px; height: 12px; }
+</style>
+</head>
+<body>
+  <div>
+    <div class="brand">
+      <h1>Jobs Guarantee Simulator</h1>
+      <span class="micro">Every number cited</span>
+    </div>
+    <div class="kicker micro">If the US guaranteed a job to anyone who wants one &mdash;</div>
+    <div class="stats">
+      <div class="stat">
+        <div class="label micro">People employed</div>
+        <div class="value">4.5M</div>
+        <div class="sub">of the officially unemployed</div>
+      </div>
+      <div class="stat">
+        <div class="label micro">Unemployment</div>
+        <div class="value"><span class="rate-old">4.4%</span><span class="rate-arrow">&#10142;</span><span class="rate-new">1.76%</span></div>
+        <div class="sub">U-3, all 50 states + DC</div>
+      </div>
+      <div class="stat">
+        <div class="label micro">Net cost per year</div>
+        <div class="value">$191.6<span class="unit">B</span></div>
+        <div class="sub">0.66% of GDP, after offsets</div>
+      </div>
+    </div>
+  </div>
+  <div class="footer">
+    <span class="micro" style="color:#96a3b4">Drag the sliders yourself &mdash; hostile settings welcome</span>
+    <div class="ramp">
+      <span style="background:#16324f"></span><span style="background:#2d4d6d"></span><span style="background:#45688a"></span><span style="background:#5c83a8"></span><span style="background:#749ec5"></span><span style="background:#8bb9e3"></span>
+    </div>
+  </div>
+</body>
+</html>
